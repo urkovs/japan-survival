@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="theme-color" content="#0c131a">
+<meta name="color-scheme" content="dark">
+<title>Quick Japanese · Speak</title>
+<style>
+:root{color-scheme:dark;--bg:#0c131a;--panel:#17232c;--raised:#21323c;--border:#354651;--text:#e7f0ef;--muted:#a5b8bb;--accent:#a9d4c3;--gold:#e6bd94;--danger:#f1aaa9}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);margin:0;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%;line-height:1.45}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{padding:22px 18px 12px;background:var(--bg)}.wrap{max-width:760px;margin:0 auto}h1{font-size:1.64rem;letter-spacing:-.04em;line-height:1.1;margin:4px 0 8px}.eyebrow{color:var(--accent);font-size:.7rem;letter-spacing:.14em;font-weight:800;text-transform:uppercase}.sub{font-size:.85rem;color:var(--muted);margin:0;max-width:32rem}.control{position:sticky;top:0;z-index:10;background:rgba(12,19,26,.97);border-bottom:1px solid var(--border);padding:12px 16px 10px;backdrop-filter:blur(12px)}.search{width:100%;padding:13px 14px;background:#1a2932;border:1px solid var(--border);border-radius:14px;color:var(--text);font-size:16px}.search::placeholder{color:#879da2}.chips{display:flex;gap:7px;overflow:auto;padding:11px 0 3px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:none;border:1px solid var(--border);background:var(--panel);color:var(--muted);border-radius:999px;padding:9px 13px;font-size:.81rem;font-weight:650;min-height:40px}.chip.active{background:var(--accent);color:#0d2721;border-color:var(--accent)}main{padding:13px 16px 116px}.section{margin:18px 0 22px}.sectionhead{display:flex;align-items:baseline;gap:10px;padding:6px 4px 12px}.sectionhead h2{font-size:.9rem;text-transform:uppercase;letter-spacing:.07em;color:var(--gold);margin:0}.sectionhead small{color:#8fa7aa}.cards{display:grid;gap:10px}.card{border:1px solid var(--border);border-radius:17px;background:var(--panel);overflow:hidden}.primary{width:100%;display:block;text-align:left;border:0;background:transparent;color:inherit;padding:17px 17px 14px}.topline{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.en{font-size:1rem;line-height:1.4;font-weight:700;flex:1}.play{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:14px;background:#264b43;color:#c8f4df;font-size:1.1rem}.ja{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;font-size:1.23rem;line-height:1.7;margin:8px 0 0;overflow-wrap:anywhere}.card.playing{border-color:var(--accent);box-shadow:0 0 0 1px #56786b}.card.playing .play{background:var(--accent);color:#123125}.actions{border-top:1px solid #30434d;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 17px;min-height:43px;gap:10px}.hint{font-size:.73rem;color:#9aaeb1}.tools{display:flex;gap:4px}.mini{background:transparent;color:var(--muted);border:0;padding:7px 10px;border-radius:9px;min-width:42px;min-height:38px;font-size:.79rem}.mini.star{font-size:1.24rem}.mini.selected{color:var(--gold)}.empty{padding:36px 15px;text-align:center;color:var(--muted)}footer{position:fixed;bottom:0;left:0;right:0;padding:11px 16px calc(11px + env(safe-area-inset-bottom));background:rgba(12,19,26,.96);border-top:1px solid var(--border);backdrop-filter:blur(15px);z-index:30}.foot{max-width:760px;margin:auto;display:flex;gap:10px;align-items:center}.status{flex:1;min-width:0;font-size:.82rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.stop{border:1px solid #664a4c;background:#3c2b30;border-radius:12px;color:#ffd1cb;min-height:46px;min-width:88px;font-weight:700}details{margin:25px 1px 0;border:1px solid var(--border);background:var(--panel);border-radius:14px;padding:13px 15px}summary{cursor:pointer;color:var(--accent);font-weight:650;min-height:26px}label{display:block;color:var(--muted);font-size:.79rem;margin:14px 0 6px}select{width:100%;max-width:100%;padding:11px;border:1px solid var(--border);border-radius:10px;background:#0e1a22;color:var(--text);min-height:44px}.voiceNote{color:var(--muted);font-size:.8rem;line-height:1.6;margin-top:14px}.check{display:flex;gap:9px;align-items:center;margin-top:10px;color:var(--muted);font-size:.85rem}.check input{width:19px;height:19px;accent-color:var(--accent)}.roman{font-size:.78rem;color:#b3c5c8;margin-top:8px;line-height:1.55}.hide{display:none!important}
+@media(min-width:670px){header{padding-top:33px}h1{font-size:2rem}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.card{height:100%;display:flex;flex-direction:column}.actions{margin-top:auto}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">Tap to speak · 日本語</div><h1>Quick Japanese</h1><p class="sub">Tap any phrase to have your phone say it in Japanese. No pronunciation needed. Every phrase is a request, not a demand.</p></div></header>
+<div class="control"><div class="wrap"><input id="search" class="search" type="search" autocomplete="off" spellcheck="false" placeholder="Search English or Japanese…" aria-label="Search phrases"><nav id="chips" class="chips" aria-label="Phrase categories"></nav></div></div>
+<main class="wrap"><div id="results"></div><details id="settings"><summary>Voice settings and pronunciation</summary><label for="voice">Japanese voice</label><select id="voice" aria-label="Japanese voice"><option value="">Automatic Japanese voice</option></select><label for="speed">Speaking speed</label><select id="speed"><option value="0.75">Slower</option><option value="0.9" selected>Natural / clear</option><option value="1">Normal</option><option value="1.12">Faster</option></select><label class="check"><input id="showRoman" type="checkbox"> Show romaji pronunciation on cards</label><p class="voiceNote">Audio uses your iPhone's built-in Japanese speech voices; the sound depends on which voices your device provides. For a smoother voice, try a Japanese enhanced voice in iPhone Settings → Accessibility → Spoken Content → Voices. Audio starts only when you tap. All phrases stay in this page; there is no microphone or server transcription.</p></details><p class="voiceNote">Confirm each person's consent and the venue's rules, especially for filming. The page doesn't automatically play anything.</p></main>
+<footer><div class="foot"><span id="status" class="status" aria-live="polite">Ready · Tap a phrase</span><button class="stop" id="stop" type="button">■ Stop</button></div></footer>
+<script>
+"use strict";
+const groups=[
+["Meet & greet","First things to say",[
+["It's so nice to meet you both!","お二人に会えて嬉しいです！","O-futari ni aete ureshii desu!"],
+["I'm a little nervous, but really excited!","ちょっと緊張してますけど、すごく楽しみです！","Chotto kinchō shitemasu kedo, sugoku tanoshimi desu!"],
+["You both look beautiful!","お二人ともすごく綺麗ですね！","O-futari tomo sugoku kirei desu ne!"],
+["My Japanese isn't very good, but I'll do my best!","日本語はまだあまり上手じゃないですけど、頑張ります！","Nihongo wa mada amari jōzu janai desu kedo, ganbarimasu!"],
+["What should I call you?","何て呼べばいいですか？","Nante yobeba ii desu ka?"]
+]],
+["About me","Easy conversation starters",[
+["I'm from near Seattle, in America.","アメリカのシアトルの近くから来ました。","Amerika no Shiatoru no chikaku kara kimashita."],
+["I'm traveling around Japan by myself for two weeks.","二週間、一人で日本を旅行しています。","Nishūkan, hitori de Nihon o ryokō shiteimasu."],
+["I'm a nurse practitioner in America. I specialize in treating migraines.","アメリカでナースプラクティショナーとして、主に片頭痛の診療をしています。","Amerika de nāsu purakutishonā to shite, omo ni henzutsū no shinryō o shiteimasu."],
+["I really love Japan, especially the countryside and hot springs.","日本が大好きです。特に田舎と温泉が好きです。","Nihon ga daisuki desu. Toku ni inaka to onsen ga suki desu."]
+]],
+["Cute & flirty","Lighthearted moments",[
+["Your smile is really cute.","笑顔がすごく可愛いですね。","Egao ga sugoku kawaii desu ne."],
+["You're making me blush!","照れちゃいます！","Terechaimasu!"],
+["You two are such a cute pair!","お二人、すごく可愛いコンビですね！","O-futari, sugoku kawaii konbi desu ne!"],
+["You're teasing me! (playfully)","もう、いじわるですね！（笑）","Mō, ijiwaru desu ne!"],
+["I'm getting spoiled today!","今日は贅沢ですね！","Kyō wa zeitaku desu ne!"],
+["This feels like a dream!","なんか、夢みたいです！","Nanka, yume mitai desu!"]
+]],
+["Consent & check-ins","Useful throughout",[
+["Is this okay?","これで大丈夫ですか？","Kore de daijōbu desu ka?"],
+["Can I make a request?","お願いしてもいいですか？","Onegai shite mo ii desu ka?"],
+["Is there anything I should know beforehand?","先に知っておいたほうがいいことはありますか？","Saki ni shitte oita hō ga ii koto wa arimasu ka?"],
+["Please tell me if there's anything you're uncomfortable with.","嫌なことがあったら、遠慮なく言ってください。","Iya na koto ga attara, enryo naku itte kudasai."],
+["Please tell me if anything is uncomfortable. (Softer wording)","嫌なことがあったら、遠慮なく言ってくださいね。","Iya na koto ga attara, enryo naku itte kudasai ne."],
+["I'd love to try something you two recommend. Anything besides anal activities?","お二人のおすすめのプレイも試してみたいです。アナル系以外で、何かおすすめはありますか？","O-futari no osusume no purei mo tameshite mitai desu. Anaru-kei igai de, nanika osusume wa arimasu ka?"]
+]],
+["Kissing & touch","Requests you can show directly",[
+["I want a massage, please.","マッサージをお願いしたいです。","Massāji o onegai shitai desu."],
+["Can we all cuddle and have deep kisses?","三人で抱き合って、ディープキスをすることはできますか？","Sannin de dakiatte, dīpu kisu o suru koto wa dekimasu ka?"],
+["Can I kiss you while she gives me a blowjob?","彼女にフェラしてもらっている間、あなたとキスしてもいいですか？","Kanojo ni fera shite moratte iru aida, anata to kisu shite mo ii desu ka?"],
+["Please lick behind and all around my ear. It turns me on a lot.","耳の後ろや周りを舐めてもらえますか？すごく興奮するんです。","Mimi no ushiro ya mawari o namete moraemasu ka? Sugoku kōfun surun desu."],
+["Please suck on my toes, especially my big toes!","足の指を吸ってもらえますか？特に親指をお願いします！","Ashi no yubi o sutte moraemasu ka? Toku ni oyayubi o onegai shimasu!"],
+["I'd love it if you two kissed while sitting on me and holding my penis.","お二人に僕の上に座ってもらって、僕のペニスを手で持ちながら、お互いにキスしてもらえたら嬉しいです。できますか？","O-futari ni boku no ue ni suwatte moratte, boku no penisu o te de mochinagara, otagai ni kisu shite moraetara ureshii desu. Dekimasu ka?"]
+]],
+["Other requests","Ask what's allowed",[
+["I want you both to give me a blowjob at the same time.","お二人に同時にフェラしてもらいたいです。できますか？","O-futari ni dōji ni fera shite moraitai desu. Dekimasu ka?"],
+["Could one of you suck my balls while the other sucks my cock?","一人がペニスを舐めている間に、もう一人が睾丸を口で愛撫してくれますか？","Hitori ga penisu o namete iru aida ni, mō hitori ga kōgan o kuchi de aibu shite kuremasu ka?"],
+["Please deepthroat me as far as you comfortably can.","無理のない範囲で、できるだけ奥までディープスロートしてもらえますか？","Muri no nai han'i de, dekiru dake oku made dīpu surōto shite moraemasu ka?"],
+["May I thrust into your mouth myself? (Irrumation)","僕のほうから口の中に腰を動かしてもいいですか？","Boku no hō kara kuchi no naka ni koshi o ugokashite mo ii desu ka?"],
+["I've never tried crural sex (sumata). Could you guide me and show me what it feels like?","素股はまだ経験したことがありません。やり方を教えてもらいながら、どんな感じなのか体験してみたいです。お願いできますか？","Sumata wa mada keiken shita koto ga arimasen. Yarikata o oshiete morainagara, donna kanji na no ka taiken shite mitai desu. Onegai dekimasu ka?"],
+["If possible, please try to make me come a second time.","できれば、もう一回イかせてもらえますか？","Dekireba, mō ikkai ikasete moraemasu ka?"]
+]],
+["Ending request","Specific request",[
+["I'd like to ejaculate in both of your mouths. Then please keep your mouths open, look up at the camera, and let it dribble out. Is that possible?","お二人の口の中に射精したいです。その後、口を開けたままカメラを見上げて、精液を口から垂らしてもらうことはできますか？","O-futari no kuchi no naka ni shasei shitai desu. Sono ato, kuchi o aketa mama kamera o miagete, seieki o kuchi kara tarashite morau koto wa dekimasu ka?"]
+]],
+["Filming & privacy","Confirm with both people and the shop",[
+["Can we record a video? Is that okay with both of you?","動画を撮影してもいいですか？お二人とも大丈夫ですか？","Dōga o satsuei shite mo ii desu ka? O-futari tomo daijōbu desu ka?"],
+["Are you both comfortable being filmed?","お二人とも撮影は大丈夫ですか？","O-futari tomo satsuei wa daijōbu desu ka?"],
+["The video is just for me. Is that okay? (Only say this if true.)","動画は自分だけで見るつもりです。それで大丈夫ですか？","Dōga wa jibun dake de miru tsumori desu. Sore de daijōbu desu ka?"]
+]],
+["My boundaries","Be clear up front",[
+["Please don't lick or touch my anus. I'd like to discuss other activities together.","お尻の穴を舐めたり、触ったりするのは苦手なので、しないでください。その他のプレイは相談しながら楽しみたいです。","Oshiri no ana o nametari, sawattari suru no wa nigate na node, shinaide kudasai. Sono hoka no purei wa sōdan shinagara tanoshimitai desu."],
+["No anal activities at all, please.","アナル系は全部なしでお願いします。","Anaru-kei wa zenbu nashi de onegai shimasu."]
+]],
+["Afterward","Finish warmly",[
+["That was wonderful. Thank you both!","本当に最高でした！お二人ともありがとう！","Hontō ni saikō deshita! O-futari tomo arigatō!"],
+["I had such a fun time with you.","一緒に過ごせて、すごく楽しかったです。","Issho ni sugosete, sugoku tanoshikatta desu."],
+["You made this a really special memory of Japan for me.","日本での特別な思い出になりました。","Nihon de no tokubetsu na omoide ni narimashita."],
+["Please take care of yourselves!","お体に気をつけてくださいね！","O-karada ni ki o tsukete kudasai ne!"]
+]]
+];
+let category="All",favs=new Set(),current=null,activeId=null,voices=[],all=[];
+try{favs=new Set(JSON.parse(localStorage.getItem("jp-voice-favs")||"[]"));}catch(e){}
+groups.forEach((g,gi)=>g[2].forEach((p,pi)=>all.push({g:gi,id:gi+"-"+pi,en:p[0],ja:p[1],roman:p[2]})));
+const $=id=>document.getElementById(id),results=$("results"),status=$("status"),synth=window.speechSynthesis;
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function renderChips(){const names=["All","★ Saved"].concat(groups.map(g=>g[0]));$("chips").innerHTML=names.map(n=>'<button type="button" class="chip'+(n===category?' active':'')+'" data-category="'+escapeHTML(n)+'" aria-pressed="'+(n===category?'true':'false')+'">'+escapeHTML(n)+'</button>').join("");}
+function render(){renderChips();const q=$("search").value.toLowerCase().trim();const visible=all.filter(p=>(category==="All"||category==="★ Saved"&&favs.has(p.id)||groups[p.g][0]===category)&&(!q||[p.en,p.ja,p.roman].join(" ").toLowerCase().includes(q)));if(!visible.length){results.innerHTML='<div class="empty">No matching phrases yet.</div>';return;}let out="";groups.forEach((g,gi)=>{const matches=visible.filter(p=>p.g===gi);if(!matches.length)return;out+='<section class="section"><div class="sectionhead"><h2>'+escapeHTML(g[0])+'</h2><small>'+matches.length+' phrase'+(matches.length===1?'':'s')+'</small></div><div class="cards">';matches.forEach(p=>{const playing=p.id===activeId;out+='<article class="card'+(playing?' playing':'')+'" data-id="'+p.id+'"><button type="button" class="primary" data-say="'+p.id+'" aria-label="Speak Japanese: '+escapeHTML(p.en)+'"><div class="topline"><span class="en">'+escapeHTML(p.en)+'</span><span class="play" aria-hidden="true">'+(playing?'♫':'▶')+'</span></div><div class="ja" lang="ja">'+escapeHTML(p.ja)+'</div><div class="roman'+($("showRoman").checked?'':' hide')+'">'+escapeHTML(p.roman)+'</div></button><div class="actions"><span class="hint">'+(playing?'Speaking Japanese…':'Tap above to play audio')+'</span><div class="tools"><button class="mini" type="button" data-copy="'+p.id+'" aria-label="Copy Japanese">Copy</button><button class="mini star'+(favs.has(p.id)?' selected':'')+'" type="button" data-fav="'+p.id+'" aria-label="'+(favs.has(p.id)?'Remove from saved':'Save phrase')+'" aria-pressed="'+favs.has(p.id)+'">'+(favs.has(p.id)?'★':'☆')+'</button></div></div></article>';});out+='</div></section>';});results.innerHTML=out;}
+function fillVoices(){if(!synth)return;const old=$("voice").value;voices=synth.getVoices().filter(v=>/^ja([_-]|$)/i.test(v.lang));const pref=voices.slice().sort((a,b)=>(/premium|enhanced|kyoko|otoya|siri/i.test(b.name)?1:0)-(/premium|enhanced|kyoko|otoya|siri/i.test(a.name)?1:0));$("voice").innerHTML='<option value="">Auto · Japanese</option>'+pref.map(v=>'<option value="'+escapeHTML(v.voiceURI)+'">'+escapeHTML(v.name)+' ('+escapeHTML(v.lang)+')</option>').join("");if(pref.some(v=>v.voiceURI===old))$("voice").value=old;}
+function stop(){if(synth)synth.cancel();current=null;activeId=null;status.textContent="Ready · Tap a phrase";document.querySelectorAll(".card.playing").forEach(x=>x.classList.remove("playing"));document.querySelectorAll(".card .play").forEach(x=>x.textContent="▶");document.querySelectorAll(".card .hint").forEach(x=>x.textContent="Tap above to play audio");}
+function speak(id){if(!synth||typeof SpeechSynthesisUtterance==="undefined"){status.textContent="Speech playback is unavailable in this browser. Open in Safari.";return;}const p=all.find(x=>x.id===id);if(!p)return;stop();const u=new SpeechSynthesisUtterance(p.ja);u.lang="ja-JP";u.rate=Number($("speed").value)||.9;u.pitch=1;u.volume=1;const selected=$("voice").value;const voice=voices.find(v=>v.voiceURI===selected)||(voices.find(v=>/kyoko|premium|enhanced|siri/i.test(v.name))||voices[0]);if(voice)u.voice=voice;current=u;activeId=id;const el=document.querySelector('[data-id="'+id+'"]');if(el){el.classList.add("playing");el.querySelector(".play").textContent="♫";el.querySelector(".hint").textContent="Speaking Japanese…";}status.textContent="Playing · "+p.en;u.onend=()=>{if(current===u)stop()};u.onerror=e=>{if(current===u){stop();status.textContent="Could not play audio · Try another Japanese voice";}};synth.speak(u);if(synth.paused)synth.resume();}
+$("chips").addEventListener("click",e=>{const b=e.target.closest("[data-category]");if(!b)return;category=b.dataset.category;render();});
+results.addEventListener("click",async e=>{const s=e.target.closest("[data-say]");if(s){speak(s.dataset.say);return;}const fav=e.target.closest("[data-fav]");if(fav){const id=fav.dataset.fav;favs.has(id)?favs.delete(id):favs.add(id);try{localStorage.setItem("jp-voice-favs",JSON.stringify([...favs]))}catch(e){}render();return;}const c=e.target.closest("[data-copy]");if(c){const p=all.find(x=>x.id===c.dataset.copy);if(!p)return;try{await navigator.clipboard.writeText(p.ja);const old=c.textContent;c.textContent="Copied!";setTimeout(()=>{c.textContent=old},1200)}catch(e){status.textContent="Copy unavailable · Long press the Japanese text";}}});
+$("search").addEventListener("input",render);$("showRoman").addEventListener("change",render);$("stop").addEventListener("click",stop);
+if(synth){fillVoices();if("onvoiceschanged" in synth)synth.addEventListener("voiceschanged",fillVoices);}else{status.textContent="Audio unavailable · Open in Safari";}
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&synth&&synth.speaking)stop();});
+render();
+</script>
+</body></html>

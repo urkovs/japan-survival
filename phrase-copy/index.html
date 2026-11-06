@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#10171d"><meta name="robots" content="noindex,nofollow,noarchive">
+<title>Quick Japanese · Tap to Copy</title>
+<style>
+:root{color-scheme:dark;--bg:#10171d;--card:#1b272f;--border:#34464f;--text:#edf5f1;--muted:#b1c2c5;--accent:#b7decf;--warm:#e8c6a8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{max-width:740px;margin:0 auto;padding:28px 18px 18px}.eyebrow{font-size:.72rem;letter-spacing:.13em;color:var(--accent);font-weight:800;text-transform:uppercase}h1{font-size:1.7rem;letter-spacing:-.045em;line-height:1.16;margin:8px 0}.sub{font-size:.95rem;color:var(--muted);margin:0}
+.sticky{position:sticky;top:0;z-index:5;background:rgba(16,23,29,.97);border-bottom:1px solid var(--border);padding:12px 16px 8px;backdrop-filter:blur(12px)}.inner{max-width:740px;margin:auto}#search{width:100%;border:1px solid var(--border);background:#223039;color:var(--text);border-radius:14px;padding:13px 15px;font-size:16px}#search::placeholder{color:#adbec0}
+.chips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:11px 0 4px}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto;white-space:nowrap;border:1px solid var(--border);background:#1d2b34;border-radius:30px;padding:9px 13px;color:var(--muted);min-height:42px;font-size:.82rem;font-weight:700}.chip[aria-pressed=true]{background:var(--accent);color:#112820;border-color:var(--accent)}
+main{max-width:740px;margin:auto;padding:14px 16px 110px}section{margin:20px 0 27px}h2{font-size:.9rem;color:var(--warm);text-transform:uppercase;letter-spacing:.09em;margin:0 2px 12px}.cards{display:grid;gap:11px}.card{border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--card)}.maincopy{border:0;background:transparent;color:var(--text);padding:19px 17px 16px;width:100%;text-align:left;display:block;min-height:115px}.copyrow{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.english{font-size:1.07rem;font-weight:720;line-height:1.38;flex:1}.copyicon{display:grid;place-items:center;border-radius:13px;min-width:51px;min-height:51px;background:#2b4c44;color:#e1fff1;font-weight:800;font-size:.73rem}.japanese{font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;line-height:1.7;font-size:1.26rem;margin-top:11px;overflow-wrap:anywhere;word-break:normal}.card.copied{border-color:var(--accent);background:#1d302d}.card.copied .copyicon{background:var(--accent);color:#183528}.actions{border-top:1px solid #34434a;display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 12px}.hint{font-size:.78rem;color:var(--muted)}.favorite{background:transparent;border:0;color:var(--warm);font-size:1.35rem;min-width:42px;min-height:42px;border-radius:10px}.roman{margin-top:10px;color:#becbcf;font-size:.78rem}.empty{padding:40px;text-align:center;color:var(--muted)}.bottom{position:fixed;bottom:0;left:0;right:0;background:rgba(17,28,34,.97);border-top:1px solid var(--border);padding:12px 18px calc(12px + env(safe-area-inset-bottom));text-align:center;color:var(--accent);font-weight:750;min-height:58px;z-index:10;backdrop-filter:blur(10px)}.settings{display:flex;align-items:center;gap:10px;margin:28px 3px;color:var(--muted);font-size:.9rem}.settings input{width:20px;height:20px;accent-color:var(--accent)}.error{color:#ffb8af}.fallbackarea{position:fixed;opacity:0;pointer-events:none;left:-99999px;top:0} @media(min-width:650px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header><div class="eyebrow">Japanese · One tap</div><h1>Tap a phrase to copy</h1><p class="sub">Tap anywhere on a phrase card to copy its Japanese text. No audio, no extra steps.</p></header>
+<div class="sticky"><div class="inner"><input id="search" type="search" placeholder="Find a phrase…" aria-label="Search phrases" autocomplete="off"><nav class="chips" id="chips"></nav></div></div>
+<main><div id="results"></div><label class="settings"><input type="checkbox" id="romaji"> Show pronunciation text</label><p class="sub" style="font-size:.78rem">Your starred phrases are saved on this device. All hotel-related phrases are excluded.</p></main>
+<div id="feedback" class="bottom" role="status" aria-live="polite">Tap any phrase to copy Japanese</div>
+<textarea id="fallbackarea" class="fallbackarea" tabindex="-1" aria-hidden="true"></textarea>
+<script>
+"use strict";
+const groups=[
+["Meet & greet","First things to say",[
+["It's so nice to meet you both!","お二人に会えて嬉しいです！","O-futari ni aete ureshii desu!"],
+["I'm a little nervous, but really excited!","ちょっと緊張してますけど、すごく楽しみです！","Chotto kinchō shitemasu kedo, sugoku tanoshimi desu!"],
+["You both look beautiful!","お二人ともすごく綺麗ですね！","O-futari tomo sugoku kirei desu ne!"],
+["My Japanese isn't very good, but I'll do my best!","日本語はまだあまり上手じゃないですけど、頑張ります！","Nihongo wa mada amari jōzu janai desu kedo, ganbarimasu!"],
+["What should I call you?","何て呼べばいいですか？","Nante yobeba ii desu ka?"]
+]],
+["About me","Easy conversation starters",[
+["I'm from near Seattle, in America.","アメリカのシアトルの近くから来ました。","Amerika no Shiatoru no chikaku kara kimashita."],
+["I'm traveling around Japan by myself for two weeks.","二週間、一人で日本を旅行しています。","Nishūkan, hitori de Nihon o ryokō shiteimasu."],
+["I'm a nurse practitioner in America. I specialize in treating migraines.","アメリカでナースプラクティショナーとして、主に片頭痛の診療をしています。","Amerika de nāsu purakutishonā to shite, omo ni henzutsū no shinryō o shiteimasu."],
+["I really love Japan, especially the countryside and hot springs.","日本が大好きです。特に田舎と温泉が好きです。","Nihon ga daisuki desu. Toku ni inaka to onsen ga suki desu."]
+]],
+["Cute & flirty","Lighthearted moments",[
+["Your smile is really cute.","笑顔がすごく可愛いですね。","Egao ga sugoku kawaii desu ne."],
+["You're making me blush!","照れちゃいます！","Terechaimasu!"],
+["You two are such a cute pair!","お二人、すごく可愛いコンビですね！","O-futari, sugoku kawaii konbi desu ne!"],
+["You're teasing me! (playfully)","もう、いじわるですね！（笑）","Mō, ijiwaru desu ne!"],
+["I'm getting spoiled today!","今日は贅沢ですね！","Kyō wa zeitaku desu ne!"],
+["This feels like a dream!","なんか、夢みたいです！","Nanka, yume mitai desu!"]
+]],
+["Consent & check-ins","Useful throughout",[
+["Is this okay?","これで大丈夫ですか？","Kore de daijōbu desu ka?"],
+["Can I make a request?","お願いしてもいいですか？","Onegai shite mo ii desu ka?"],
+["Is there anything I should know beforehand?","先に知っておいたほうがいいことはありますか？","Saki ni shitte oita hō ga ii koto wa arimasu ka?"],
+["Please tell me if there's anything you're uncomfortable with.","嫌なことがあったら、遠慮なく言ってください。","Iya na koto ga attara, enryo naku itte kudasai."],
+["Please tell me if anything is uncomfortable. (Softer wording)","嫌なことがあったら、遠慮なく言ってくださいね。","Iya na koto ga attara, enryo naku itte kudasai ne."],
+["I'd love to try something you two recommend. Anything besides anal activities?","お二人のおすすめのプレイも試してみたいです。アナル系以外で、何かおすすめはありますか？","O-futari no osusume no purei mo tameshite mitai desu. Anaru-kei igai de, nanika osusume wa arimasu ka?"]
+]],
+["Kissing & touch","Requests you can show directly",[
+["I want a massage, please.","マッサージをお願いしたいです。","Massāji o onegai shitai desu."],
+["Can we all cuddle and have deep kisses?","三人で抱き合って、ディープキスをすることはできますか？","Sannin de dakiatte, dīpu kisu o suru koto wa dekimasu ka?"],
+["Can I kiss you while she gives me a blowjob?","彼女にフェラしてもらっている間、あなたとキスしてもいいですか？","Kanojo ni fera shite moratte iru aida, anata to kisu shite mo ii desu ka?"],
+["Please lick behind and all around my ear. It turns me on a lot.","耳の後ろや周りを舐めてもらえますか？すごく興奮するんです。","Mimi no ushiro ya mawari o namete moraemasu ka? Sugoku kōfun surun desu."],
+["Please suck on my toes, especially my big toes!","足の指を吸ってもらえますか？特に親指をお願いします！","Ashi no yubi o sutte moraemasu ka? Toku ni oyayubi o onegai shimasu!"],
+["I'd love it if you two kissed while sitting on me and holding my penis.","お二人に僕の上に座ってもらって、僕のペニスを手で持ちながら、お互いにキスしてもらえたら嬉しいです。できますか？","O-futari ni boku no ue ni suwatte moratte, boku no penisu o te de mochinagara, otagai ni kisu shite moraetara ureshii desu. Dekimasu ka?"]
+]],
+["Other requests","Ask what's allowed",[
+["I want you both to give me a blowjob at the same time.","お二人に同時にフェラしてもらいたいです。できますか？","O-futari ni dōji ni fera shite moraitai desu. Dekimasu ka?"],
+["Could one of you suck my balls while the other sucks my cock?","一人がペニスを舐めている間に、もう一人が睾丸を口で愛撫してくれますか？","Hitori ga penisu o namete iru aida ni, mō hitori ga kōgan o kuchi de aibu shite kuremasu ka?"],
+["Please deepthroat me as far as you comfortably can.","無理のない範囲で、できるだけ奥までディープスロートしてもらえますか？","Muri no nai han'i de, dekiru dake oku made dīpu surōto shite moraemasu ka?"],
+["May I thrust into your mouth myself? (Irrumation)","僕のほうから口の中に腰を動かしてもいいですか？","Boku no hō kara kuchi no naka ni koshi o ugokashite mo ii desu ka?"],
+["I've never tried crural sex (sumata). Could you guide me and show me what it feels like?","素股はまだ経験したことがありません。やり方を教えてもらいながら、どんな感じなのか体験してみたいです。お願いできますか？","Sumata wa mada keiken shita koto ga arimasen. Yarikata o oshiete morainagara, donna kanji na no ka taiken shite mitai desu. Onegai dekimasu ka?"],
+["If possible, please try to make me come a second time.","できれば、もう一回イかせてもらえますか？","Dekireba, mō ikkai ikasete moraemasu ka?"]
+]],
+["Ending request","Specific request",[
+["I'd like to ejaculate in both of your mouths. Then please keep your mouths open, look up at the camera, and let it dribble out. Is that possible?","お二人の口の中に射精したいです。その後、口を開けたままカメラを見上げて、精液を口から垂らしてもらうことはできますか？","O-futari no kuchi no naka ni shasei shitai desu. Sono ato, kuchi o aketa mama kamera o miagete, seieki o kuchi kara tarashite morau koto wa dekimasu ka?"]
+]],
+["Filming & privacy","Confirm with both people and the shop",[
+["Can we record a video? Is that okay with both of you?","動画を撮影してもいいですか？お二人とも大丈夫ですか？","Dōga o satsuei shite mo ii desu ka? O-futari tomo daijōbu desu ka?"],
+["Are you both comfortable being filmed?","お二人とも撮影は大丈夫ですか？","O-futari tomo satsuei wa daijōbu desu ka?"],
+["The video is just for me. Is that okay? (Only say this if true.)","動画は自分だけで見るつもりです。それで大丈夫ですか？","Dōga wa jibun dake de miru tsumori desu. Sore de daijōbu desu ka?"]
+]],
+["My boundaries","Be clear up front",[
+["Please don't lick or touch my anus. I'd like to discuss other activities together.","お尻の穴を舐めたり、触ったりするのは苦手なので、しないでください。その他のプレイは相談しながら楽しみたいです。","Oshiri no ana o nametari, sawattari suru no wa nigate na node, shinaide kudasai. Sono hoka no purei wa sōdan shinagara tanoshimitai desu."],
+["No anal activities at all, please.","アナル系は全部なしでお願いします。","Anaru-kei wa zenbu nashi de onegai shimasu."]
+]],
+["Afterward","Finish warmly",[
+["That was wonderful. Thank you both!","本当に最高でした！お二人ともありがとう！","Hontō ni saikō deshita! O-futari tomo arigatō!"],
+["I had such a fun time with you.","一緒に過ごせて、すごく楽しかったです。","Issho ni sugosete, sugoku tanoshikatta desu."],
+["You made this a really special memory of Japan for me.","日本での特別な思い出になりました。","Nihon de no tokubetsu na omoide ni narimashita."],
+["Please take care of yourselves!","お体に気をつけてくださいね！","O-karada ni ki o tsukete kudasai ne!"]
+]]
+];
+const all=groups.flatMap((g,gi)=>g[2].map((p,pi)=>({id:gi+"-"+pi,gi,en:p[0],ja:p[1],roman:p[2]})));
+let category="All",saved=new Set();
+try{saved=new Set(JSON.parse(localStorage.getItem("jpcopyfavorites")||"[]"));}catch(e){}
+const $=id=>document.getElementById(id);
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+function render(){
+ const cats=["All","★ Saved",...groups.map(g=>g[0])];
+ $("chips").innerHTML=cats.map(c=>'<button class="chip" type="button" data-category="'+escapeHtml(c)+'" aria-pressed="'+(c===category)+'">'+escapeHtml(c)+'</button>').join("");
+ const q=$("search").value.toLowerCase().trim();
+ const filtered=all.filter(p=>(category==="All"||category==="★ Saved"&&saved.has(p.id)||groups[p.gi][0]===category)&&(!q||[p.en,p.ja,p.roman].join(" ").toLowerCase().includes(q)));
+ let html="";
+ groups.forEach((g,gi)=>{const entries=filtered.filter(p=>p.gi===gi);if(!entries.length)return;
+ html+='<section><h2>'+escapeHtml(g[0])+'</h2><div class="cards">';
+ entries.forEach(p=>{html+='<article class="card" data-card="'+p.id+'"><button type="button" class="maincopy" data-copy="'+p.id+'" aria-label="Copy Japanese phrase: '+escapeHtml(p.en)+'"><div class="copyrow"><span class="english">'+escapeHtml(p.en)+'</span><span class="copyicon">COPY</span></div><div class="japanese" lang="ja">'+escapeHtml(p.ja)+'</div>'+( $("romaji").checked?'<div class="roman">'+escapeHtml(p.roman)+'</div>':'')+'</button><div class="actions"><span class="hint">Tap above → copies Japanese</span><button type="button" data-fav="'+p.id+'" class="favorite" aria-label="'+(saved.has(p.id)?"Unsave":"Save")+' phrase">'+(saved.has(p.id)?"★":"☆")+'</button></div></article>';});
+ html+='</div></section>';});
+ $("results").innerHTML=html||'<p class="empty">No matching phrases.</p>';
+}
+async function copyPhrase(id){
+ const phrase=all.find(p=>p.id===id);if(!phrase)return;
+ const feedback=$("feedback"),card=document.querySelector('[data-card="'+id+'"]');let ok=false;
+ // Legacy copy is synchronous and works in many iOS in-app browsers where Clipboard API fails.
+ const area=$("fallbackarea");
+ try{area.value=phrase.ja;area.focus({preventScroll:true});area.select();area.setSelectionRange(0,area.value.length);ok=document.execCommand("copy");}catch(e){}
+ if(!ok&&navigator.clipboard&&navigator.clipboard.writeText){try{await navigator.clipboard.writeText(phrase.ja);ok=true}catch(e){}}
+ if(ok){feedback.textContent="✓ Copied Japanese to clipboard";feedback.classList.remove("error");if(card){card.classList.add("copied");card.querySelector(".copyicon").textContent="✓";setTimeout(()=>{card.classList.remove("copied");const i=card.querySelector(".copyicon");if(i)i.textContent="COPY"},1300);}} 
+ else{feedback.textContent="Copy was blocked — long-press Japanese to select and copy";feedback.classList.add("error");}
+}
+$("results").addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(b){copyPhrase(b.dataset.copy);return}const fav=e.target.closest("[data-fav]");if(fav){saved.has(fav.dataset.fav)?saved.delete(fav.dataset.fav):saved.add(fav.dataset.fav);try{localStorage.setItem("jpcopyfavorites",JSON.stringify([...saved]))}catch(e){}render()}});
+$("chips").addEventListener("click",e=>{const b=e.target.closest("[data-category]");if(b){category=b.dataset.category;render()}});
+$("search").addEventListener("input",render);
+$("romaji").addEventListener("change",render);
+render();
+</script></body></html>

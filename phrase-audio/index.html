@@ -15,7 +15,7 @@ header{padding:22px 18px 12px;background:var(--bg)}.wrap{max-width:760px;margin:
 </style>
 </head>
 <body>
-<header><div class="wrap"><div class="eyebrow">Tap to speak · 日本語</div><h1>Quick Japanese</h1><p class="sub">Tap any phrase to have your phone say it in Japanese. No pronunciation needed. Every phrase is a request, not a demand.</p></div></header>
+<header><div class="wrap"><div class="eyebrow">Tap to speak · 日本語</div><h1>Quick Japanese</h1><p class="sub">Tap any phrase to hear Japanese. If opened inside ChatGPT, use Share → Open in Safari for sound.</p></div></header>
 <div class="control"><div class="wrap"><input id="search" class="search" type="search" autocomplete="off" spellcheck="false" placeholder="Search English or Japanese…" aria-label="Search phrases"><nav id="chips" class="chips" aria-label="Phrase categories"></nav></div></div>
 <main class="wrap"><div id="results"></div><details id="settings"><summary>Voice settings and pronunciation</summary><label for="voice">Japanese voice</label><select id="voice" aria-label="Japanese voice"><option value="">Automatic Japanese voice</option></select><label for="speed">Speaking speed</label><select id="speed"><option value="0.75">Slower</option><option value="0.9" selected>Natural / clear</option><option value="1">Normal</option><option value="1.12">Faster</option></select><label class="check"><input id="showRoman" type="checkbox"> Show romaji pronunciation on cards</label><p class="voiceNote">Audio uses your iPhone's built-in Japanese speech voices; the sound depends on which voices your device provides. For a smoother voice, try a Japanese enhanced voice in iPhone Settings → Accessibility → Spoken Content → Voices. Audio starts only when you tap. All phrases stay in this page; there is no microphone or server transcription.</p></details><p class="voiceNote">Confirm each person's consent and the venue's rules, especially for filming. The page doesn't automatically play anything.</p></main>
 <footer><div class="foot"><span id="status" class="status" aria-live="polite">Ready · Tap a phrase</span><button class="stop" id="stop" type="button">■ Stop</button></div></footer>
@@ -94,8 +94,87 @@ function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":
 function renderChips(){const names=["All","★ Saved"].concat(groups.map(g=>g[0]));$("chips").innerHTML=names.map(n=>'<button type="button" class="chip'+(n===category?' active':'')+'" data-category="'+escapeHTML(n)+'" aria-pressed="'+(n===category?'true':'false')+'">'+escapeHTML(n)+'</button>').join("");}
 function render(){renderChips();const q=$("search").value.toLowerCase().trim();const visible=all.filter(p=>(category==="All"||category==="★ Saved"&&favs.has(p.id)||groups[p.g][0]===category)&&(!q||[p.en,p.ja,p.roman].join(" ").toLowerCase().includes(q)));if(!visible.length){results.innerHTML='<div class="empty">No matching phrases yet.</div>';return;}let out="";groups.forEach((g,gi)=>{const matches=visible.filter(p=>p.g===gi);if(!matches.length)return;out+='<section class="section"><div class="sectionhead"><h2>'+escapeHTML(g[0])+'</h2><small>'+matches.length+' phrase'+(matches.length===1?'':'s')+'</small></div><div class="cards">';matches.forEach(p=>{const playing=p.id===activeId;out+='<article class="card'+(playing?' playing':'')+'" data-id="'+p.id+'"><button type="button" class="primary" data-say="'+p.id+'" aria-label="Speak Japanese: '+escapeHTML(p.en)+'"><div class="topline"><span class="en">'+escapeHTML(p.en)+'</span><span class="play" aria-hidden="true">'+(playing?'♫':'▶')+'</span></div><div class="ja" lang="ja">'+escapeHTML(p.ja)+'</div><div class="roman'+($("showRoman").checked?'':' hide')+'">'+escapeHTML(p.roman)+'</div></button><div class="actions"><span class="hint">'+(playing?'Speaking Japanese…':'Tap above to play audio')+'</span><div class="tools"><button class="mini" type="button" data-copy="'+p.id+'" aria-label="Copy Japanese">Copy</button><button class="mini star'+(favs.has(p.id)?' selected':'')+'" type="button" data-fav="'+p.id+'" aria-label="'+(favs.has(p.id)?'Remove from saved':'Save phrase')+'" aria-pressed="'+favs.has(p.id)+'">'+(favs.has(p.id)?'★':'☆')+'</button></div></div></article>';});out+='</div></section>';});results.innerHTML=out;}
 function fillVoices(){if(!synth)return;const old=$("voice").value;voices=synth.getVoices().filter(v=>/^ja([_-]|$)/i.test(v.lang));const pref=voices.slice().sort((a,b)=>(/premium|enhanced|kyoko|otoya|siri/i.test(b.name)?1:0)-(/premium|enhanced|kyoko|otoya|siri/i.test(a.name)?1:0));$("voice").innerHTML='<option value="">Auto · Japanese</option>'+pref.map(v=>'<option value="'+escapeHTML(v.voiceURI)+'">'+escapeHTML(v.name)+' ('+escapeHTML(v.lang)+')</option>').join("");if(pref.some(v=>v.voiceURI===old))$("voice").value=old;}
-function stop(){if(synth)synth.cancel();current=null;activeId=null;status.textContent="Ready · Tap a phrase";document.querySelectorAll(".card.playing").forEach(x=>x.classList.remove("playing"));document.querySelectorAll(".card .play").forEach(x=>x.textContent="▶");document.querySelectorAll(".card .hint").forEach(x=>x.textContent="Tap above to play audio");}
-function speak(id){if(!synth||typeof SpeechSynthesisUtterance==="undefined"){status.textContent="Speech playback is unavailable in this browser. Open in Safari.";return;}const p=all.find(x=>x.id===id);if(!p)return;stop();const u=new SpeechSynthesisUtterance(p.ja);u.lang="ja-JP";u.rate=Number($("speed").value)||.9;u.pitch=1;u.volume=1;const selected=$("voice").value;const voice=voices.find(v=>v.voiceURI===selected)||(voices.find(v=>/kyoko|premium|enhanced|siri/i.test(v.name))||voices[0]);if(voice)u.voice=voice;current=u;activeId=id;const el=document.querySelector('[data-id="'+id+'"]');if(el){el.classList.add("playing");el.querySelector(".play").textContent="♫";el.querySelector(".hint").textContent="Speaking Japanese…";}status.textContent="Playing · "+p.en;u.onend=()=>{if(current===u)stop()};u.onerror=e=>{if(current===u){stop();status.textContent="Could not play audio · Try another Japanese voice";}};synth.speak(u);if(synth.paused)synth.resume();}
+
+let playbackToken=0;
+let queuedTimer=null;
+function clearPlaybackUI(){
+  current=null;activeId=null;
+  document.querySelectorAll(".card.playing").forEach(el=>el.classList.remove("playing"));
+  document.querySelectorAll(".card .play").forEach(el=>el.textContent="▶");
+  document.querySelectorAll(".card .hint").forEach(el=>el.textContent="Tap above to play audio");
+}
+function stop(){
+  playbackToken++;
+  if(queuedTimer){clearTimeout(queuedTimer);queuedTimer=null;}
+  // iOS Safari can silently drop new audio if cancel() is called immediately before speak().
+  // Only cancel when the user explicitly stops or interrupts something already playing.
+  if(synth&&(synth.speaking||synth.pending))synth.cancel();
+  clearPlaybackUI();
+  status.textContent="Ready · Tap a phrase";
+}
+function speak(id){
+  if(!synth||typeof SpeechSynthesisUtterance==="undefined"){
+    status.textContent="Speech not supported here. Open this page directly in Safari.";
+    return;
+  }
+  const p=all.find(x=>x.id===id);if(!p)return;
+  const wasActive=synth.speaking||synth.pending;
+  const token=++playbackToken;
+  if(queuedTimer){clearTimeout(queuedTimer);queuedTimer=null;}
+  // The critical fix: DO NOT cancel before the first utterance or after one ends.
+  if(wasActive)synth.cancel();
+  clearPlaybackUI();
+  activeId=id;
+  const el=document.querySelector('[data-id="'+id+'"]');
+  if(el){el.classList.add("playing");el.querySelector(".play").textContent="♫";el.querySelector(".hint").textContent="Starting Japanese audio…";}
+  status.textContent="Starting audio · "+p.en;
+  const play=()=>{
+    if(token!==playbackToken)return;
+    const u=new SpeechSynthesisUtterance(p.ja);
+    u.lang="ja-JP";
+    u.rate=Number($("speed").value)||0.9;
+    u.pitch=1;u.volume=1;
+    // With 'Automatic', let Safari choose the voice for ja-JP.
+    const selected=$("voice").value;
+    const selectedVoice=voices.find(v=>v.voiceURI===selected);
+    if(selectedVoice)u.voice=selectedVoice;
+    current=u;
+    let started=false;
+    u.onstart=()=>{
+      if(token!==playbackToken)return;
+      started=true;
+      status.textContent="Speaking Japanese · "+p.en;
+      if(el){el.querySelector(".hint").textContent="Speaking Japanese…";}
+    };
+    u.onend=()=>{
+      if(token!==playbackToken)return;
+      clearPlaybackUI();status.textContent="Ready · Tap another phrase";
+    };
+    u.onerror=e=>{
+      if(token!==playbackToken)return;
+      clearPlaybackUI();
+      status.textContent="Audio failed. Open in Safari, then try again.";
+    };
+    try{
+      synth.speak(u);
+      if(synth.paused)synth.resume();
+      // iOS's embedded browsers sometimes silently ignore speech without an error.
+      // Tell the user how to recover instead of falsely claiming audio is playing.
+      setTimeout(()=>{
+        if(token===playbackToken&&!started){
+          status.textContent="No audio? Open in Safari directly (not the app browser).";
+          if(el){const hint=el.querySelector(".hint");if(hint)hint.textContent="Tap again or open in Safari";}
+        }
+      },2200);
+    }catch(e){
+      if(token!==playbackToken)return;
+      clearPlaybackUI();status.textContent="Speech blocked here. Try Safari.";
+    }
+  };
+  // When interrupting an existing utterance, give iOS time to clear its queue.
+  if(wasActive)queuedTimer=setTimeout(()=>{queuedTimer=null;play();},260);
+  else play(); // Keep first playback inside the original user tap.
+}
 $("chips").addEventListener("click",e=>{const b=e.target.closest("[data-category]");if(!b)return;category=b.dataset.category;render();});
 results.addEventListener("click",async e=>{const s=e.target.closest("[data-say]");if(s){speak(s.dataset.say);return;}const fav=e.target.closest("[data-fav]");if(fav){const id=fav.dataset.fav;favs.has(id)?favs.delete(id):favs.add(id);try{localStorage.setItem("jp-voice-favs",JSON.stringify([...favs]))}catch(e){}render();return;}const c=e.target.closest("[data-copy]");if(c){const p=all.find(x=>x.id===c.dataset.copy);if(!p)return;try{await navigator.clipboard.writeText(p.ja);const old=c.textContent;c.textContent="Copied!";setTimeout(()=>{c.textContent=old},1200)}catch(e){status.textContent="Copy unavailable · Long press the Japanese text";}}});
 $("search").addEventListener("input",render);$("showRoman").addEventListener("change",render);$("stop").addEventListener("click",stop);
